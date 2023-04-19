@@ -1,9 +1,19 @@
-import React from "react";
+import React, { useState } from "react";
+import { useDispatch } from "react-redux";
+import { act_add } from "./../actions/index";
 
 export default function Product(props) {
   // Chú ý: tên của props truyền từ component ListProduct xuống component Product thì phải giống nhau
   // thì mới lấy được dữ liệu
   const { product } = props;
+  // Khai báo dispatch để nhận biết hành động
+  const dispatch = useDispatch();
+  const [quantity, setQuantity] = useState(1);
+
+  // Hàm thêm mới sản phẩm vào giỏ hàng
+  const handleAdd = () => {
+    dispatch(act_add(product, quantity));
+  };
   return (
     <div>
       <div className="media product">
@@ -22,10 +32,11 @@ export default function Product(props) {
               <input
                 name="quantity-product-1"
                 type="number"
-                defaultValue={1}
+                value={quantity}
+                onChange={(e) => setQuantity(+e.target.value)}
                 min={1}
               />
-              <a data-product={1} href="#" className="price">
+              <a data-product={1} className="price" onClick={handleAdd}>
                 {product.price} USD{" "}
               </a>
             </>
